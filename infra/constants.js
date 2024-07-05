@@ -11,4 +11,5 @@ export const Texts = {
   TITLE: "Title",
   COMMUNITY: "Community",
   PROCESSING: "Processing...",
+  NA: "N/A",
 };

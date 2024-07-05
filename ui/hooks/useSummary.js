@@ -1,6 +1,5 @@
 import { useCallback } from "react"
-
-const SHOW_FIRST_N_COMPANIES = 8
+import { Texts } from "../../infra/constants"
 
 export const useSummary = (selectedCommunity, people, registering) => {
 
@@ -12,9 +11,9 @@ export const useSummary = (selectedCommunity, people, registering) => {
         return record.checkOutDate
     }).length
     
-    const companyGroup = useCallback(() => people?.reduce((accumulator, person) => {
-        const { companyName } = person
-        if (!companyName) {
+    const companyGroup = useCallback(() => registering?.reduce((accumulator, record) => {
+        const { person: { companyName }, checkOutDate } = record
+        if (!companyName || checkOutDate) {
             return accumulator
         }
 
@@ -24,16 +23,14 @@ export const useSummary = (selectedCommunity, people, registering) => {
 
         accumulator.set(companyName, 1)
         return accumulator
-    }, new Map()), [selectedCommunity, people])
+    }, new Map()), [selectedCommunity, registering])
 
     const companyGroupToString = useCallback(() => Array.from(companyGroup().entries())
-        .slice(0, SHOW_FIRST_N_COMPANIES)
         .map((entry) => `${entry[0]} (${entry[1]})`)
-        .join(", ")
-        .concat("...")
+        .join(", ") || Texts.NA
     , [companyGroup])
 
-    const peopleInTheEvent = people.length
+    const peopleInTheEvent = people.length - notCheckedIn
 
     return {
         notCheckedIn,

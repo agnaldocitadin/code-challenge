@@ -13,10 +13,6 @@ export const SummaryCard = ({ peopleInTheEvent, notCheckedIn, companyGroupStr}) 
 }
 
 const Label = ({ text, value }) => {
-    if (!value) {
-        return null
-    }
-
     return (
         <h2><span className="font-bold">{text}:</span> {value}</h2>
     )
